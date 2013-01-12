@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
+require_relative '../constants.rb'
+
 module IronMaster
   # Class for handling locstr.bin
   class LocStrFile
     attr_reader :number_of_strings, :offset_to_strings, :strings
-
-    UTF_16_NULL = "\u0000".encode("UTF-16LE")
 
     # Creates a new, empty LocStrFile-object
     def initialize
