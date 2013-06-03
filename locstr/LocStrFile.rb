@@ -58,7 +58,7 @@ module IronMaster
           old_offset = file.pos
 
           file.pos = @offset_to_strings + offset
-          strings << file.gets(UTF_16_NULL).encode("UTF-8")
+          strings << file.gets(UTF_16_NULL).chop.encode("UTF-8") + LOCSTR_END_OF_LINE 
 
           file.pos = old_offset
         end
@@ -86,8 +86,8 @@ module IronMaster
     #   - +input_file+ -> the file to parse
     # 
     def parse_file!(input_file)
-      File.open(input_file, "rb:UTF-8").each("\x00\n") do |line|
-        strings << line.chop
+      File.open(input_file, "rb:UTF-8").each(LOCSTR_END_OF_LINE + "\n") do |line|
+        strings << line.chomp(LOCSTR_END_OF_LINE + "\n") + "\x00"
       end
 
       @number_of_strings = @strings.size
