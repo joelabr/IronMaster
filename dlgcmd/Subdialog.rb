@@ -228,12 +228,12 @@ module IronMaster
     end
 
     class TextEntry < Entry
-      attr_reader :id, :text, :mirror_image, :has_icon, :icon_id,
+      attr_reader :npc_id, :text, :mirror_image, :has_icon, :icon_id,
                   :number_of_options, :option_labels
 
       def initialize
         @type              = 3
-        @id                = ""
+        @npc_id            = ""
         @text              = ""
         @mirror_image      = 0
         @display_icon      = 0
@@ -245,7 +245,7 @@ module IronMaster
       def calculate_size(offset)
         start_offset = offset
 
-        offset += 2 + @id.length
+        offset += 2 + @npc_id.length
         offset += 1 if (offset % 2) != 0
         offset += 5 + (2 * @text.length)
 
@@ -264,7 +264,7 @@ module IronMaster
       end
 
       def from_file!(file)
-        @id = file.gets("\0").chomp("\0")
+        @npc_id = file.gets("\0").chomp("\0")
 
         file.pos += 1 if (file.pos % 2) != 0
 
@@ -295,7 +295,7 @@ module IronMaster
       end
 
       def from_json!(data)
-        @id                = data['id']
+        @npc_id            = data['npc_id']
         @text              = data['text']
         @mirror_image      = data['mirror_image']
         @display_icon      = data['display_icon']
@@ -309,7 +309,7 @@ module IronMaster
       def to_file(file)
         super
 
-        file.write([@id].pack("Z*"))
+        file.write([@npc_id].pack("Z*"))
 
         file.pos += 1 if (file.pos % 2) != 0
 
@@ -339,7 +339,7 @@ module IronMaster
 
       def to_s
         "#{super}\n" +
-        "ID: #{@id}\n" +
+        "ID: #{@npc_id}\n" +
         "Text: #{@text}\n" +
         "Mirror image: #{@mirror_image}\n" +
         "Display icon: #{@display_icon}\n" +
